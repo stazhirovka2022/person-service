@@ -15,7 +15,6 @@
 
     <properties>
         <!--        Проектные настройки\версии-->
-        <liquibase.version>4.8.0</liquibase.version>
     </properties>
 
     <dependencyManagement>

@@ -15,45 +15,7 @@
     <packaging>jar</packaging>
 
     <dependencies>
-        <!--JDBC drivers-->
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-core</artifactId>
-            <version>${liquibase.version}</version>
-        </dependency>
+
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.liquibase</groupId>
-                <artifactId>liquibase-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
-
-    <profiles>
-        <!-- Local settings, -Denv=local -->
-        <profile>
-            <id>local</id>
-            <activation>
-                <property>
-                    <name>env</name>
-                    <value>local</value>
-                </property>
-            </activation>
-            <properties>
-                <profile.propertyFile>src/main/resources/db/local/liquibase.properties</profile.propertyFile>
-                <profile.changeLogFile>src/main/resources/db/master.xml</profile.changeLogFile>
-                <profile.dataDir>src/main/resources/db/local/data</profile.dataDir>
-                <profile.verbose>true</profile.verbose>
-                <profile.logging>debug</profile.logging>
-                <profile.changelogSchemaName>default</profile.changelogSchemaName>
-            </properties>
-        </profile>
-    </profiles>
 </project>
