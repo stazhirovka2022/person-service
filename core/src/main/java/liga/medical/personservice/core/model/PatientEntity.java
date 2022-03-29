@@ -21,4 +21,6 @@ public class PatientEntity {
 
     private String phoneNumber;
 
+    private String address;
+
 }
