@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="liga.medical.personservice.core.repository.PatientRepository">
+
+    <resultMap id="patientEntity" type="liga.medical.personservice.core.model.PatientEntity" autoMapping="true">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <select id="findByIds" resultMap="patientEntity">
+        <bind name="" value=""/>
+        SELECT id, first_name, last_name, middle_name, gender, birthday_dt, phone_number
+        FROM patient
+        <choose>
+            <when test="patientIds.isEmpty()">
+                ORDER BY id ASC
+                LIMIT 10;
+            </when>
+            <otherwise>
+                WHERE id IN
+                <foreach collection='patientIds' item='id' open='(' separator=',' close=')'>
+                    #{id, jdbcType=BIGINT}
+                </foreach>
+            </otherwise>
+        </choose>
+    </select>
+
+    <insert id="insertAll" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO patient (first_name, last_name, middle_name, gender, birthday_dt, phone_number) VALUES
+        <foreach collection="patientList" item="patient" separator=",">
+            (#{patient.firstName, jdbcType=VARCHAR}, #{patient.lastName, jdbcType=VARCHAR},
+            #{patient.middleName, jdbcType=DATE}, #{patient.gender, jdbcType=VARCHAR},
+            #{patient.gender,jdbcType=VARCHAR}, #{patient.birthdayDt,jdbcType=DATE},
+            #{patient.phoneNumber,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+    <update id="updateById" parameterType="liga.medical.personservice.core.model.PatientEntity">
+        <if test="id != null">
+            UPDATE patient SET
+            <if test="firstName != null">
+                first_name = #{firstName},
+            </if>
+            <if test="lastName != null">
+                last_name = #{lastName},
+            </if>
+            <if test="middleName != null">
+                middle_name = #{middleName},
+            </if>
+            <if test="gender != null">
+                gender = #{gender}
+            </if>
+            <if test="birthdayDt != null">
+                birthday_dt = #{birthdayDt}
+            </if>
+            <if test="phoneNumber != null">
+                phone_number = #{phoneNumber}
+            </if>
+            WHERE id = #{id};
+        </if>
+    </update>
+
+    <delete id="deleteById">
+        DELETE
+        FROM patient
+        WHERE id = #{patientId,jdbcType=BIGINT};
+    </delete>
+</mapper>
