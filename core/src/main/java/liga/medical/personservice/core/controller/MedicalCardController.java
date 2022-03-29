@@ -1,7 +1,7 @@
 package liga.medical.personservice.core.controller;
 
 import liga.medical.personservice.core.model.MedicalCardEntity;
-import liga.medical.personservice.core.repository.MedicalCardRepository;
+import liga.medical.personservice.core.service.MedicalCardService;
 import liga.medical.personservice.dto.MedicalCardDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,17 +23,16 @@ import java.util.stream.Collectors;
 @RequestMapping("/medical-card")
 public class MedicalCardController {
 
-    //fixme в домашке здесь должен быть интерфейс сервиса
     @Autowired
-    private MedicalCardRepository medicalCardRepository;
+    private MedicalCardService medicalCardService;
 
-    //fixme в домашке он должен быть бином
+    @Autowired
     private ModelMapper modelMapper = new ModelMapper();
 
     @PostMapping("/save")
     void saveNewMedicalCard(@RequestBody @Valid MedicalCardDto medicalCard) {
         MedicalCardEntity cardEntity = modelMapper.map(medicalCard, MedicalCardEntity.class);
-        medicalCardRepository.insert(cardEntity);
+        medicalCardService.insert(cardEntity);
     }
 
     @PostMapping("/save-all")
@@ -41,20 +40,26 @@ public class MedicalCardController {
         List<MedicalCardEntity> cardEntityList = medicalCard.stream()
                 .map(el -> modelMapper.map(el, MedicalCardEntity.class))
                 .collect(Collectors.toList());
-        medicalCardRepository.insertAll(cardEntityList);
+        medicalCardService.insertAll(cardEntityList);
     }
 
     @GetMapping("/{id}")
     MedicalCardDto getCardById(@PathVariable Long id) {
-        MedicalCardEntity medicalCard = medicalCardRepository.findById(id);
+        MedicalCardEntity medicalCard = medicalCardService.findById(id);
         return modelMapper.map(medicalCard, MedicalCardDto.class);
     }
 
     @GetMapping("")
     List<MedicalCardDto> getCardByIds(@RequestParam List<Long> ids) {
-        List<MedicalCardEntity> medicalCard = medicalCardRepository.findByIds(ids);
+        List<MedicalCardEntity> medicalCard = medicalCardService.findByIds(ids);
         return medicalCard.stream()
                 .map(el -> modelMapper.map(el, MedicalCardDto.class))
                 .collect(Collectors.toList());
     }
+//    Дима Максимов
+//    @PatchMapping("/{id}")
+//    MedicalCardDto updateCardById(@PathVariable Long id) {
+//        MedicalCardEntity medicalCard = medicalCardRepository.findById(id);
+//        return modelMapper.map(medicalCard, MedicalCardDto.class);
+//    }
 }

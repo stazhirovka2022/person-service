@@ -2,7 +2,6 @@ package liga.medical.personservice.core.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.AdviceMode;
@@ -20,7 +19,6 @@ import javax.sql.DataSource;
  */
 @Configuration
 @EnableTransactionManagement(mode = AdviceMode.PROXY)
-//@MapperScan(basePackages = "mybatis")
 @Slf4j
 public class MyBatisConfig {
 
